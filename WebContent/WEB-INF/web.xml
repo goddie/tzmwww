@@ -4,18 +4,21 @@
         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 	<display-name>SpringFramework</display-name>
+	<welcome-file-list>
+		<welcome-file>page/index.jsp</welcome-file>
+	</welcome-file-list> 
 
 	<!-- 加载所有的配置文件 -->
-	<context-param>
+<!-- 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:/spring-*.xml</param-value>
-	</context-param>
+	</context-param> -->
 
 	<!-- 配置Spring监听 -->
-	<listener>
+<!-- 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
+ -->
 	<!-- 配置SpringMVC -->
 	<servlet>
 		<servlet-name>springMVC</servlet-name>
