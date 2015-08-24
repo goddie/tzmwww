@@ -82,6 +82,12 @@ public class TradeRecord extends BaseUUIDEntity {
 	private User follow;
 	
 	/**
+	 * 是否有人跟买
+	 */
+	@Column
+	private int hasFans;
+	
+	/**
 	 * 操作类型
 	 * 1 交易操作
 	 * 2 资金操作
@@ -90,6 +96,14 @@ public class TradeRecord extends BaseUUIDEntity {
 	private int type;
 	
 	
+
+	public int getHasFans() {
+		return hasFans;
+	}
+
+	public void setHasFans(int hasFans) {
+		this.hasFans = hasFans;
+	}
 
 	public int getAgreeBuy() {
 		return agreeBuy;

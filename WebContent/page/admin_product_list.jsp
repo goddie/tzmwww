@@ -5,28 +5,91 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>产品列表</title>
+<jsp:include page="/resource/inc/admin_style.jsp"></jsp:include>
 </head>
-<body>
+<body class="bootstrap-admin-with-small-navbar">
+	<jsp:include page="/resource/inc/top_nav.jsp"></jsp:include>
 
-	<table width="100%" border="1" cellspacing="0" cellpadding="0">
-		<tr>
-			<td>&nbsp;</td>
-			<td>产品名</td>
-			<td>&nbsp;</td>
-			<td>&nbsp;</td>
-		</tr>
-		<c:forEach var="m" varStatus="status" items="${list}">
-			<tr>
-				<td>${status.index+1}</td>
-				<td>${m.name}</td>
-				<td>${m.weekRate}</td>
-				<td><a
-					href="${pageContext.request.contextPath}/productinfo/admin/add?pid=${m.id}&type=1">购买须知</a>
-					<a
-					href="${pageContext.request.contextPath}/productinfo/admin/add?pid=${m.id}&type=2">产品详情</a></td>
-			</tr>
-		</c:forEach>
-	</table>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2 bootstrap-admin-col-left">
+				<jsp:include page="/resource/inc/leftmenu_userconfig.jsp"></jsp:include>
+			</div>
+			<div class="col-md-10">
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<div class="text-muted bootstrap-admin-box-title">产品列表</div>
+
+							</div>
+
+							<div class="bootstrap-admin-panel-content">
+								<div id="example_wrapper" class="dataTables_wrapper form-inline"
+									role="grid">
+
+									<table class="table table-striped table-bordered dataTable"
+										id="example" aria-describedby="example_info">
+										<thead>
+											<tr role="row">
+												<th style="width: 30px;">序号
+												</th>
+												<th>编号</th>
+												<th>名称</th>
+												<th>简称</th>
+												<th>期限</th>
+												<th>收益率</th>
+												<th>风险等级</th>
+												<th>付息方式</th>
+											</tr>
+										</thead>
+										<tbody role="alert" aria-live="polite" aria-relevant="all">
+											<c:forEach var="m" varStatus="status" items="${list}">
+												<tr class="gradeA odd">
+													<td class="sorting_1">${status.index+1}</td>
+													<td class="">${m.CPBH}</td>
+													<td class="">${m.CPMC}</td>
+													<td class="">${m.CPJC}</td>
+													<td class="">${m.CPQX}</td>
+													<td class="">${m.SYLZD}-${m.SYLZG}</td>
+													<td class="">${m.FXDJ}</td>
+													<td class="">${m.FXFS}</td>
+													 
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+									<div class="row">
+										 
+										<div class="col-md-12">
+											<div class="dataTables_paginate paging_bootstrap">
+												<ul class="pagination">
+													<li class="prev disabled"><a href="#">← Previous</a></li>
+													<li class="active"><a href="#">1</a></li>
+													<li><a href="#">2</a></li>
+													<li><a href="#">3</a></li>
+													<li><a href="#">4</a></li>
+													<li><a href="#">5</a></li>
+													<li class="next"><a href="#">Next → </a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	</div>
+	</div>
+	</div>
+	<jsp:include page="/resource/inc/admin_script.jsp"></jsp:include>
 </body>
+
 </html>

@@ -38,6 +38,20 @@ public abstract class BaseEntity<ID> {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	protected Date lastModifiedDate;
+	
+	
+	@Column
+	private int isDelete;
+	
+	
+
+	public int getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(int isDelete) {
+		this.isDelete = isDelete;
+	}
 
 	public abstract void setId(final ID id);
 
@@ -96,6 +110,8 @@ public abstract class BaseEntity<ID> {
 	public void setVersion(int version) {
 		this.version = version;
 	}
+	
+	
 
 	public void resetCommonProperties() {
 		setId(null);
@@ -106,11 +122,12 @@ public abstract class BaseEntity<ID> {
 		createdDate = null;
 		aclCode = null;
 		aclType = null;
+		isDelete = 0;
 	}
 
 	private static final String[] PROPERTY_LIST = new String[] { "id",
 			"version", "lastModifiedBy", "lastModifiedDate", "createdBy",
-			"createdDate", "aclCode", "aclType" };
+			"createdDate", "aclCode", "aclType", "isDelete" };
 
 	public String[] retriveCommonProperties() {
 		return PROPERTY_LIST;

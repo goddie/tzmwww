@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.xiaba2.cms.domain.Member;
 import com.xiaba2.core.BaseUUIDEntity;
 
@@ -15,6 +16,7 @@ import com.xiaba2.core.BaseUUIDEntity;
  */
 @Entity
 @Table(name = "db_invest_user")
+@JsonIgnoreProperties({"member"})
 public class User extends BaseUUIDEntity 
 {
 	@Column

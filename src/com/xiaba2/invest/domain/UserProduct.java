@@ -1,5 +1,10 @@
 package com.xiaba2.invest.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import com.xiaba2.core.BaseUUIDEntity;
 
 /**
@@ -7,52 +12,69 @@ import com.xiaba2.core.BaseUUIDEntity;
  * @author goddie
  *
  */
+@Entity
+@Table(name = "db_invest_userproduct")
 public class UserProduct extends BaseUUIDEntity {
 
+	@ManyToOne
 	private User uesr;
 	
+	@ManyToOne
 	private Product product;
 	
 	/**
 	 * 是否公开
 	 */
+	@Column
 	private int isShow;
 
 	/**
 	 * 拥有数量
 	 */
+	@Column
 	private float amount;
+	
+	@ManyToOne
+	private User follow;
 
-	public User getUesr() {
-		return uesr;
+	public float getAmount() {
+		return amount;
 	}
 
-	public void setUesr(User uesr) {
-		this.uesr = uesr;
-	}
-
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
+	public User getFollow() {
+		return follow;
 	}
 
 	public int getIsShow() {
 		return isShow;
 	}
 
-	public void setIsShow(int isShow) {
-		this.isShow = isShow;
+	public Product getProduct() {
+		return product;
 	}
 
-	public float getAmount() {
-		return amount;
+	public User getUesr() {
+		return uesr;
 	}
 
 	public void setAmount(float amount) {
 		this.amount = amount;
+	}
+
+	public void setFollow(User follow) {
+		this.follow = follow;
+	}
+
+	public void setIsShow(int isShow) {
+		this.isShow = isShow;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public void setUesr(User uesr) {
+		this.uesr = uesr;
 	}
 	
 	

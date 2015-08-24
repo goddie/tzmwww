@@ -38,7 +38,7 @@ public class MemberService extends BaseService<Member, UUID> {
 	@Transactional
 	public Member save(Member entity) {
 
-		if (StringUtils.isEmpty(entity.getUsername()) || StringUtils.isEmpty(entity.getPassword())) {
+		if (StringUtils.isEmpty(entity.getUsername()) && StringUtils.isEmpty(entity.getPassword())) {
 			throw new RuntimeException();
 		}
 
@@ -55,10 +55,11 @@ public class MemberService extends BaseService<Member, UUID> {
 
 		entity = memberDao.save(entity);
 
-		User user = new User();
-		user.setMember(entity);
-
-		userDao.save(user);
+//		User user = new User();
+//		user.setMember(entity);
+//		userDao.save(user);
+//		entity.setUser(user);
+//		memberDao.saveOrUpdate(entity);
 
 		return entity;
 	}

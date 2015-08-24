@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.xiaba2.core.BaseUUIDEntity;
+import com.xiaba2.invest.domain.User;
 
 /**
  * 
@@ -139,6 +140,20 @@ public class Member extends BaseUUIDEntity {
 	 */
 	@Column
 	private String loginIp;
+	
+	@ManyToOne
+	private User user;
+	
+	
+	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public String getEmail() {
 		return email;

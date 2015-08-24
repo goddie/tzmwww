@@ -8,6 +8,11 @@ import javax.persistence.Table;
 import com.xiaba2.core.BaseUUIDEntity;
 
 
+/**
+ * 达人申请
+ * @author goddie
+ *
+ */
 @Entity
 @Table(name = "db_invest_popularapply")
 public class PopularApply extends BaseUUIDEntity {
