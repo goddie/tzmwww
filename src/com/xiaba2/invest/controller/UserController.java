@@ -1,9 +1,13 @@
 package com.xiaba2.invest.controller;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,8 +23,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.xiaba2.cms.controller.AlbumController;
 import com.xiaba2.cms.domain.Member;
 import com.xiaba2.cms.service.MemberService;
 import com.xiaba2.core.JsonResult;
@@ -70,9 +79,9 @@ public class UserController {
 		criteria.add(Restrictions.eq("username", entity.getUsername()));
 		List<User> list = userService.findByCriteria(criteria);
 		if (list != null && list.size() > 0) {
-			
+
 			return mv;
-			
+
 		}
 
 		entity.setCreatedDate(new Date());
@@ -110,18 +119,19 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/json/list")
 	public JsonResult jsonList(@RequestParam("p") int p) {
+
+		JsonResult rs = new JsonResult();
+
 		p = Math.max(p, 1);
 
 		Page<User> page = new Page<User>();
 		page.setPageNo(p);
-		page.setPageSize(999);
+		page.setPageSize(15);
 		page.addOrder("createdDate", "desc");
 
 		DetachedCriteria criteria = userService.createDetachedCriteria();
 		criteria.add(Restrictions.eq("isDelete", 0));
 		page = userService.findPageByCriteria(criteria, page);
-
-		JsonResult rs = new JsonResult();
 
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(page.getResult());
@@ -140,23 +150,21 @@ public class UserController {
 	public JsonResult jsonReg(User entity, HttpServletRequest request) {
 
 		JsonResult rs = new JsonResult();
-		
+
 		if (StringUtils.isEmpty(entity.getUsername())) {
 
-			
 			rs.setCode(JsonResult.FAIL);
 			rs.setMsg("注册失败");
 			return rs;
 
 		}
-		
-		
+
 		DetachedCriteria criteria = userService.createDetachedCriteria();
 		criteria.add(Restrictions.eq("isDelete", 0));
 		criteria.add(Restrictions.eq("username", entity.getUsername()));
 		List<User> list = userService.findByCriteria(criteria);
 		if (list != null && list.size() > 0) {
-			
+
 			rs.setMsg("注册失败");
 			return rs;
 		}
@@ -169,11 +177,11 @@ public class UserController {
 		userService.save(entity);
 
 		if (entity.getId() == null) {
- 
+
 			rs.setMsg("注册失败");
 			return rs;
 		}
- 
+
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(entity);
 		rs.setMsg("注册成功!");
@@ -304,24 +312,26 @@ public class UserController {
 		sb.append(SendSMS.getRand());
 		sb.append(SendSMS.getRand());
 
-		String mess = "您的校验码是：" + sb.toString()
-				+ "。请不要把校验码泄露给其他人。如非本人操作，可不用理会！";
+		String mess = "您的验证码是：" + sb.toString()
+				+ "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！";
+		// String mess = "您的校验码是：" + sb.toString()+
+		// "。请不要把校验码泄露给其他人。如非本人操作，可不用理会！";
 
 		// String code = "2";
-//		String code = SendSMS.sendSMS("cf_shzywh", "cfshzywh", phone, mess);
+		// String code = SendSMS.sendSMS("cf_shzywh", "cfshzywh", phone, mess);
 
-		String code = SendSMS.sendSMS("cf_shzywh", "cfshzywh", phone, mess);
+		String code = SendSMS.sendSMS("cf_itzmao", "itzmao123", phone, mess);
 		if (code.endsWith("2")) {
 
-//			Member member = new Member();
-//
-//			member.setUsername(phone);
-//			member.setCreatedDate(new Date());
-//			member = memberService.save(member);
-//
-//			User user = member.getUser();
+			// Member member = new Member();
+			//
+			// member.setUsername(phone);
+			// member.setCreatedDate(new Date());
+			// member = memberService.save(member);
+			//
+			// User user = member.getUser();
 
-			User user =new User();
+			User user = new User();
 			user.setNickname("投资猫网友");
 			user.setPhone(phone);
 			user.setUsername(phone);
@@ -378,8 +388,7 @@ public class UserController {
 		rs.setMsg("注册成功");
 		return rs;
 	}
-	
-	
+
 	/**
 	 * 获取列表
 	 * 
@@ -388,7 +397,6 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/json/search")
 	public JsonResult jsonSearch(@RequestParam("s") String s) {
- 
 
 		Page<User> page = new Page<User>();
 		page.setPageNo(1);
@@ -405,6 +413,65 @@ public class UserController {
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(page.getResult());
 
+		return rs;
+	}
+
+	/**
+	 * 上传头像
+	 * @param file
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/json/upavatar")
+	public JsonResult jsonUpavatar(
+			@RequestParam(value = "file", required = false) MultipartFile file,
+			HttpServletRequest request) {
+
+		JsonResult rs = new JsonResult();
+
+		String uid = request.getParameter("uid");
+		if (StringUtils.isEmpty(uid)) {
+			return rs;
+		}
+
+		// String path = System.getProperty("myapp.root") + "upload";
+		String path = this.getClass().getClassLoader().getResource("/")
+				.getPath();
+		path = path.replace("WEB-INF" + File.separator + "classes"
+				+ File.separator, "upload");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String pdate = sdf.format(new Date());
+		path = path + File.separator + pdate;
+		String ext = file.getOriginalFilename().substring(
+				file.getOriginalFilename().lastIndexOf("."));
+		String fileName = UUID.randomUUID().toString().replace("-", "") + ext;
+		// String fileName = new Date().getTime()+".jpg";
+		Logger.getLogger(AlbumController.class.toString())
+				.log(Level.INFO, path);
+		// System.out.println(path);
+		File targetFile = new File(path, fileName);
+		if (!targetFile.exists()) {
+			targetFile.mkdirs();
+		}
+		// 保存
+		try {
+			file.transferTo(targetFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String extPath = request.getContextPath() + "/upload/" + pdate + "/";
+		
+		User user = userService.get(UUID.fromString(uid));
+		
+		
+		user.setAvatar(extPath+fileName);
+		
+		userService.saveOrUpdate(user);
+		
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		
 		return rs;
 	}
 

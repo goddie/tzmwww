@@ -18,6 +18,12 @@ import com.xiaba2.core.BaseUUIDEntity;
 public class Product extends BaseUUIDEntity {
 
 	/**
+	 * 推荐
+	 */
+	@Column
+	private int recom;
+	
+	/**
 	 * 产品编号	BIGINT
 	 */
 	@Column
@@ -301,6 +307,16 @@ public class Product extends BaseUUIDEntity {
 
 	public void setCPJC(String cPJC) {
 		CPJC = cPJC;
+	}
+	
+	
+
+	public int getRecom() {
+		return recom;
+	}
+
+	public void setRecom(int recom) {
+		this.recom = recom;
 	}
 
 	public String getCPMC() {

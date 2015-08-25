@@ -135,14 +135,14 @@ public class ProductController {
 
 		Page<Product> page = new Page<Product>();
 		page.setPageNo(p);
-		page.setPageSize(10);
+		page.setPageSize(15);
 		page.addOrder("createdDate", "desc");
 
 		DetachedCriteria criteria = productService.createDetachedCriteria();
 
 		// 推荐
 		if (type == 0) {
-			// criteria.add(Restrictions.eq("risk",""))
+			criteria.add(Restrictions.eq("recom", 1));
 		}
 
 		// 低风险
@@ -166,7 +166,7 @@ public class ProductController {
 
 				BeanUtils.copyProperties(vo, product);
 				
-				List<User> list2 = incomeRecordService.getTopUser(3);
+				List<User> list2 = incomeRecordService.getTopUser(6);
 				
 				vo.setList(list2);
 

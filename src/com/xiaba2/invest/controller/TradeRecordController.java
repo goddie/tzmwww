@@ -93,6 +93,8 @@ public class TradeRecordController {
 	public JsonResult jsonList(@RequestParam("p") int p,
 			HttpServletRequest request) {
 
+		JsonResult rs = new JsonResult();
+		
 		String uid = request.getParameter("uid");
 
 		User u = null;
@@ -110,10 +112,11 @@ public class TradeRecordController {
 
 		Page<TradeRecord> page = new Page<TradeRecord>();
 		page.setPageNo(p);
-		page.setPageSize(10);
+		page.setPageSize(15);
 		page.addOrder("createdDate", "desc");
 
 		DetachedCriteria criteria = tradeRecordService.createDetachedCriteria();
+		
 		criteria.add(Restrictions.eq("user.id", u.getId()));
 
 		page = tradeRecordService.findPageByCriteria(criteria, page);
@@ -122,7 +125,7 @@ public class TradeRecordController {
 			return new JsonResult("没有记录");
 		}
 
-		JsonResult rs = new JsonResult();
+		
 
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(page.getResult());
