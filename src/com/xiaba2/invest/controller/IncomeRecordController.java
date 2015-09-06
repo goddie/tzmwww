@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xiaba2.invest.domain.IncomeRecord;
@@ -38,9 +39,8 @@ public class IncomeRecordController {
 	}
 	
 	@RequestMapping(value = "/action/add")
-	public ModelAndView actionAdd(IncomeRecord entity,UUID uid,UUID pid) {
+	public ModelAndView actionAdd(IncomeRecord entity,@RequestParam("uid") UUID uid,@RequestParam("pid") UUID pid) {
 		ModelAndView mv = new ModelAndView("redirect:/incomerecord/admin/add");
-		
 		
 		User user = userService.get(uid);
 		

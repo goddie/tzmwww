@@ -35,6 +35,26 @@ public class Message extends BaseUUIDEntity {
 	@Column(length=1000)
 	private String content;
 
+	/**
+	 * 状态
+	 * 0 未读取
+	 * 1 已读取
+	 */
+	@Column
+	private int status;
+	
+	
+	
+
+	public int getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 
 	public String getContent() {
 		return content;

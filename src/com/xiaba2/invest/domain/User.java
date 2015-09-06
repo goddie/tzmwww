@@ -62,10 +62,13 @@ public class User extends BaseUUIDEntity
 	
 	
 	/**
-	 * 猫币
+	 *积分
 	 */
 	@Column
 	private float score;
+	
+	@Column
+	private float catCoin;
 
 	/**
 	 * 累计收益率
@@ -123,15 +126,54 @@ public class User extends BaseUUIDEntity
 	/**
 	 * 总收益
 	 */
+	@Column
 	private float totalIncome;
 
 
 	/**
 	 * 昨日收益
 	 */
+	@Column
 	private float lastIncome;
 	
+	/**
+	 * 是否推荐
+	 */
+	@Column
+	private int isRecommend;
 	
+	/**
+	 * 数字账号
+	 */
+	@Column
+	private String serail;
+	
+	
+	
+	public float getCatCoin() {
+		return catCoin;
+	}
+
+	public void setCatCoin(float catCoin) {
+		this.catCoin = catCoin;
+	}
+
+	public String getSerail() {
+		return serail;
+	}
+
+	public void setSerail(String serail) {
+		this.serail = serail;
+	}
+
+	public int getIsRecommend() {
+		return isRecommend;
+	}
+
+	public void setIsRecommend(int isRecommend) {
+		this.isRecommend = isRecommend;
+	}
+
 	public String getAvatar() {
 		return avatar;
 	}

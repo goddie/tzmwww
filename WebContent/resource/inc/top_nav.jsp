@@ -21,9 +21,10 @@
                             <ul class="nav navbar-nav">
                                 <li class="active"><a href="${pageContext.request.contextPath}/page/ucenter_userconfig.jsp">账户设置</a></li>
                                 <li><a href="${pageContext.request.contextPath}/page/admin_user.jsp">用户管理</a></li>
-                                <li><a href="${pageContext.request.contextPath}/page/admin_fund.jsp">基金管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/page/admin_fund.jsp">产品管理</a></li>
                                 <li><a href="${pageContext.request.contextPath}/page/admin_traderecord.jsp">交易记录</a></li>
                                 <li><a href="${pageContext.request.contextPath}/page/admin_popular.jsp">投资猫达人</a></li>
+                                <li><a href="${pageContext.request.contextPath}/keyvalue/admin/list">规则管理</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->
                     </div>

@@ -185,6 +185,39 @@ public class ProductController {
 
 		return rs;
 	}
+	
+	
+	
+	
+	/**
+	 * 获取列表
+	 * 
+	 * @param p
+	 * @return
+	 */
+	@RequestMapping(value = "/json/sel")
+	public ModelAndView jsonSel(HttpServletRequest request) {
+		
+		ModelAndView mv =new ModelAndView("admin_product_sel");
+		int p=1;
+		String pstr = request.getParameter("p");
+		if(!StringUtils.isEmpty(pstr))
+		{
+			p = Integer.parseInt(pstr);
+		}
+		Page<Product> page = new Page<Product>();
+		page.setPageNo(p);
+		page.setPageSize(15);
+		page.addOrder("createdDate", "desc");
+
+		DetachedCriteria criteria = productService.createDetachedCriteria();
+ 
+		page = productService.findPageByCriteria(criteria, page);
+
+		mv.addObject("list",page.getResult());
+
+		return mv;
+	}
 
 	/**
 	 * 具体产品信息

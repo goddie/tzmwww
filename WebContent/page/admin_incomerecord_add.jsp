@@ -25,14 +25,12 @@
 				<div class="modal-body">
 					<iframe marginheight="0" marginwidth="0" frameborder="0"
 						width="100%"
-						src="${pageContext.request.contextPath}/user//sel"></iframe>
+						src="${pageContext.request.contextPath}/user/json/sel"></iframe>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
-		<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -46,11 +44,12 @@
 				<div class="modal-body">
 					<iframe marginheight="0" marginwidth="0" frameborder="0"
 						width="100%"
-						src="${pageContext.request.contextPath}/team/admin/sel"></iframe>
+						src="${pageContext.request.contextPath}/product/json/sel"></iframe>
 				</div>
 			</div>
 		</div>
 	</div>
+
 
 
 	<div class="container">
@@ -68,7 +67,7 @@
 							<div
 								class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
 								<form
-									action="${pageContext.request.contextPath}/incomerecord/add"
+									action="${pageContext.request.contextPath}/incomerecord/action/add"
 									name="form1" method="post" class="form-horizontal">
 									<fieldset>
 
@@ -131,7 +130,33 @@
 	<jsp:include page="/resource/inc/admin_script.jsp"></jsp:include>
 
 	<script type="text/javascript">
-		
+
+	$('#myModal1').on('show.bs.modal', function(e) {
+		nameEle = $("#nickname");
+		valueEle = $("#uid");
+	})
+
+	$('#myModal2').on('show.bs.modal', function(e) {
+		nameEle = $("#pname");
+		valueEle = $("#pid");
+	})
+
+	function onsel(e, k, v) {
+
+		if (e == "user") {
+			nameEle.val(k);
+			valueEle.val(v);
+			$('#myModal1').modal('hide');
+			$('#myModal2').modal('hide');
+		}
+
+		if (e == "product") {
+			nameEle.val(k);
+			valueEle.val(v);
+			$('#myModal1').modal('hide');
+			$('#myModal2').modal('hide');
+		}
+	}
 	</script>
 </body>
 </html>

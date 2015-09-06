@@ -138,6 +138,63 @@ public class UserController {
 
 		return rs;
 	}
+	
+	
+	@RequestMapping(value = "/json/sel")
+	public ModelAndView jsonSel(HttpServletRequest request) {
+
+		ModelAndView mv = new ModelAndView("admin_user_sel");
+
+		int p=1;
+		String pstr = request.getParameter("p");
+		if(!StringUtils.isEmpty(pstr))
+		{
+			
+			p = Integer.parseInt(pstr);
+		}
+ 
+
+		Page<User> page = new Page<User>();
+		page.setPageNo(p);
+		page.setPageSize(15);
+		page.addOrder("createdDate", "desc");
+
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		page = userService.findPageByCriteria(criteria, page);
+ 
+		mv.addObject("list",page.getResult());
+		return mv;
+	}
+	
+	
+	/**
+	 * 获取推荐列表
+	 * 
+	 * @param p
+	 * @return
+	 */
+	@RequestMapping(value = "/json/recommlist")
+	public JsonResult jsonRecommList(@RequestParam("p") int p) {
+
+		JsonResult rs = new JsonResult();
+
+		p = Math.max(p, 1);
+
+		Page<User> page = new Page<User>();
+		page.setPageNo(p);
+		page.setPageSize(15);
+		page.addOrder("createdDate", "desc");
+
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		page = userService.findPageByCriteria(criteria, page);
+
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(page.getResult());
+
+		return rs;
+	}
 
 	/**
 	 * 注册
@@ -292,6 +349,10 @@ public class UserController {
 		JsonResult rs = new JsonResult();
 		// rs.setCode(JsonResult.SUCCESS);
 		// return rs;
+		
+		
+		
+		
 
 		Pattern p = null;
 		Matcher m = null;
@@ -301,6 +362,20 @@ public class UserController {
 
 		if (!m.matches()) {
 			rs.setMsg("手机号不正确");
+			return rs;
+		}
+		
+		
+		
+		//是否已注册
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		criteria.add(Restrictions.eq("phone", phone));
+
+		List<User> list = userService.findByCriteria(criteria);
+
+		if (!list.isEmpty()) {
+			rs.setMsg("手机号已被注册。");
 			return rs;
 		}
 
@@ -474,5 +549,79 @@ public class UserController {
 		
 		return rs;
 	}
+	
+	
+	/**
+	 * 修改密码
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/uppassword")
+	public JsonResult jsonUpPassword(@RequestParam("uid") UUID uid, @RequestParam("password") String password) {
+		JsonResult rs = new JsonResult();
+		
+		User user = userService.get(uid);
+		
+		user.setPassword(password);
+		 
+		userService.saveOrUpdate(user);
+		
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		rs.setMsg("修改成功!");
+	
+		return rs;
+	}
 
+	
+	/**
+	 * 修改个人信息
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/update")
+	public JsonResult jsonUpdate(@RequestParam("uid") UUID uid,HttpServletRequest request) {
+		JsonResult rs = new JsonResult();
+		
+		User user = userService.get(uid);
+		
+		user.setNickname(request.getParameter("nickname"));
+		user.setPhone(request.getParameter("phone"));
+		user.setInfo(request.getParameter("info"));
+		
+		
+		userService.saveOrUpdate(user);
+		
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		rs.setMsg("修改成功!");
+	
+		return rs;
+	}
+	
+	
+	/**
+	 * 修改密码
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/updatenickname")
+	public JsonResult jsonUpdateNickname(@RequestParam("uid") UUID uid,HttpServletRequest request) {
+		JsonResult rs = new JsonResult();
+		
+		User user = userService.get(uid);
+		
+		user.setNickname(request.getParameter("nickname"));
+		
+		userService.saveOrUpdate(user);
+		
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		rs.setMsg("修改成功!");
+	
+		return rs;
+	}
 }
