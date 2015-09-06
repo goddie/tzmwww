@@ -12,6 +12,14 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop       
+       	http://www.springframework.org/schema/aop/spring-aop.xsd
+       	http://www.springframework.org/schema/data/jpa 
+       	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       	http://www.springframework.org/schema/data/repository   
+       	http://www.springframework.org/schema/data/repository/spring-repository.xsd
+       	http://www.springframework.org/schema/cache 
+       	http://www.springframework.org/schema/cache/spring-cache.xsd
         ">
 
 
@@ -20,8 +28,6 @@
 	<!-- 允许对静态资源文件的访问 -->
 	<mvc:default-servlet-handler />
 	<mvc:resources location="/resource/" mapping="/resource/**" />
-
-
 
 	<!-- 注解探测器 -->
 	<context:annotation-config />
@@ -55,23 +61,14 @@
 		<property name="password">
 			<value>goddie</value>
 		</property>
+
 	</bean>
-	
-		<!-- <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName">
-			<value>com.mysql.jdbc.Driver</value>
-		</property>
-		<property name="url">
-			<value>jdbc:mysql://localhost:3306/db_touzimao</value>
-		</property>
-		<property name="username">
-			<value>root</value>
-		</property>
-		<property name="password">
-			<value>goddie</value>
-		</property>
-	</bean> -->
+
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" 
+		destroy-method="close"> <property name="driverClassName"> <value>com.mysql.jdbc.Driver</value> 
+		</property> <property name="url"> <value>jdbc:mysql://localhost:3306/db_touzimao</value> 
+		</property> <property name="username"> <value>root</value> </property> <property 
+		name="password"> <value>goddie</value> </property> </bean> -->
 
 	<!-- HIBERNATE配置 -->
 	<bean id="sessionFactory"
@@ -167,8 +164,6 @@
 			</bean>
 		</property>
 	</bean>
-
- 
 
 
 

@@ -57,6 +57,7 @@ public class UserController {
 	public ModelAndView getPage(@PathVariable String name) {
 		return new ModelAndView("admin_user_" + name);
 	}
+ 
 
 	/**
 	 * 添加页面
