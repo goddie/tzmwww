@@ -1,5 +1,7 @@
 package com.xiaba2.invest.domain;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -73,20 +75,41 @@ public class Order extends BaseUUIDEntity {
 	 * 支付时间
 	 */
 	@Column
-	private int payDate;
+	private Date payDate;
 	
 	
 	/**
 	 * 支付宝支付通知
 	 */
 	@Column
-	private int alipayServer;
+	private String alipayServer;
 	
 	/**
 	 * 说明备注
 	 */
 	@Column
 	private String info;
+	
+	
+	
+
+	public String getAlipayServer() {
+		return alipayServer;
+	}
+
+	public void setAlipayServer(String alipayServer) {
+		this.alipayServer = alipayServer;
+	}
+
+	public Date getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
+ 
 
 	public User getUser() {
 		return user;
@@ -160,13 +183,7 @@ public class Order extends BaseUUIDEntity {
 		this.payType = payType;
 	}
 
-	public int getPayDate() {
-		return payDate;
-	}
-
-	public void setPayDate(int payDate) {
-		this.payDate = payDate;
-	}
+ 
 
 	public String getInfo() {
 		return info;

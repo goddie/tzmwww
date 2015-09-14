@@ -28,9 +28,9 @@ public class PopularApplyController {
 	private UserService userService;
 
 	@RequestMapping(value = "/json/add")
-	public JsonResult jsonAdd(@RequestParam("uuid") String uuid) {
+	public JsonResult jsonAdd(@RequestParam("uid") String uid) {
 
-		User user = userService.getByMemberUUID(uuid);
+		User user = userService.getByMemberUUID(uid);
 
 		
 		PopularApply entity = new PopularApply();

@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,32 @@ public class UserService extends BaseService<User, UUID> {
 		UUID id = UUID.fromString(uuid);
 		Member member = memberService.get(id);
 		return getByMember(member);
+	}
+	
+	/**
+	 * 根据电话号码获取
+	 * @param phone
+	 * @return
+	 */
+	@Transactional
+	public User getByPhone(String phone)
+	{
+		if(StringUtils.isEmpty(phone))
+		{
+			return null;
+		}
+		
+		DetachedCriteria criteria = userDao.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		criteria.add(Restrictions.eq("phone", phone));
+
+		List<User> list = findByCriteria(criteria);
+
+		if (list.isEmpty()) {
+			return null;
+		}
+		
+		return list.get(0);
 	}
 
 }

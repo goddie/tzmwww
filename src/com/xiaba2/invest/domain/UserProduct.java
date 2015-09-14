@@ -93,6 +93,23 @@ public class UserProduct extends BaseUUIDEntity {
 	 */
 	@Column
 	private float totalIncome;
+	
+	/**
+	 * 持有产品状态
+	 * 0无效 1有效收益 
+	 */
+	@Column
+	private int status;
+	
+	
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	public float getAmount() {
 		return amount;

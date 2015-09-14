@@ -89,8 +89,9 @@ public class TradeRecord extends BaseUUIDEntity {
 	
 	/**
 	 * 操作类型
-	 * 1 交易操作
-	 * 2 资金操作
+	 * 1 购买产品
+	 * 2 充值
+	 * 3 提现
 	 */
 	@Column
 	private int type;

@@ -62,11 +62,21 @@ public class User extends BaseUUIDEntity
 	
 	
 	/**
+	 * 收益财产
+	 */
+	@Column
+	private float incomeWealth;
+	
+	
+	/**
 	 *积分
 	 */
 	@Column
 	private float score;
 	
+	/**
+	 * 猫币
+	 */
 	@Column
 	private float catCoin;
 
@@ -150,6 +160,15 @@ public class User extends BaseUUIDEntity
 	
 	
 	
+	
+	public float getIncomeWealth() {
+		return incomeWealth;
+	}
+
+	public void setIncomeWealth(float incomeWealth) {
+		this.incomeWealth = incomeWealth;
+	}
+
 	public float getCatCoin() {
 		return catCoin;
 	}

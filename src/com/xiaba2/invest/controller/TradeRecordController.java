@@ -39,6 +39,42 @@ public class TradeRecordController {
 	@Resource
 	private ProductService productService;
 
+	/**
+	 * 充值
+	 * 
+	 * @param uid
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/json/addcharge")
+	public JsonResult jsonAddCharge(@RequestParam("uid") UUID uid,
+			HttpServletRequest request) {
+		JsonResult rs = new JsonResult();
+
+		User user = userService.get(uid);
+
+		float amount = Float.parseFloat(request.getParameter("amount"));
+		if (amount <= 0) {
+			return rs;
+		}
+
+		//充值
+		TradeRecord entity = new TradeRecord();
+		entity.setUser(user);
+		entity.setAmount(amount);
+		entity.setCreatedDate(new Date());
+		entity.setTradeNo(request.getParameter("tradeNo").replace("-", ""));
+		entity.setType(2);
+		entity.setOptName("充值");
+
+		tradeRecordService.save(entity);
+
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setMsg("充值成功!");
+
+		return rs;
+	}
+
 	@RequestMapping(value = "/json/add")
 	public JsonResult jsonAdd(@RequestParam("uid") String uid,
 			@RequestParam("pid") String pid, TradeRecord entity,
@@ -46,10 +82,10 @@ public class TradeRecordController {
 		if (StringUtils.isEmpty(uid) || StringUtils.isEmpty(pid)) {
 			return new JsonResult("购买失败!");
 		}
-		
+
 		String fid = request.getParameter("fid");
 		if (!StringUtils.isEmpty(fid)) {
-			User follow =  userService.get(UUID.fromString(fid));
+			User follow = userService.get(UUID.fromString(fid));
 			entity.setFollow(follow);
 		}
 
@@ -63,6 +99,8 @@ public class TradeRecordController {
 		entity.setProduct(product);
 		entity.setCreatedDate(new Date());
 		entity.setTitle(product.getCPMC());
+		entity.setType(1);
+		entity.setOptName("买入");
 
 		tradeRecordService.save(entity);
 
@@ -94,7 +132,7 @@ public class TradeRecordController {
 			HttpServletRequest request) {
 
 		JsonResult rs = new JsonResult();
-		
+
 		String uid = request.getParameter("uid");
 
 		User u = null;
@@ -116,7 +154,7 @@ public class TradeRecordController {
 		page.addOrder("createdDate", "desc");
 
 		DetachedCriteria criteria = tradeRecordService.createDetachedCriteria();
-		
+
 		criteria.add(Restrictions.eq("user.id", u.getId()));
 
 		page = tradeRecordService.findPageByCriteria(criteria, page);
@@ -124,8 +162,6 @@ public class TradeRecordController {
 		if (page.getResult().isEmpty()) {
 			return new JsonResult("没有记录");
 		}
-
-		
 
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(page.getResult());
@@ -186,6 +222,7 @@ public class TradeRecordController {
 
 	/**
 	 * 跟我的
+	 * 
 	 * @param p
 	 * @param uid
 	 * @param pid
@@ -196,7 +233,7 @@ public class TradeRecordController {
 	public JsonResult jsonFanList(@RequestParam("p") int p,
 			@RequestParam("uid") String uid, @RequestParam("pid") String pid,
 			HttpServletRequest request) {
-		
+
 		User u = userService.get(UUID.fromString(uid));
 
 		p = Math.max(p, 1);

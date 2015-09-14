@@ -134,6 +134,11 @@ public class UserController {
 		criteria.add(Restrictions.eq("isDelete", 0));
 		page = userService.findPageByCriteria(criteria, page);
 
+		
+		for (User user : page.getResult()) {
+			user.setPassword(null);
+		}
+		
 		rs.setCode(JsonResult.SUCCESS);
 		rs.setData(page.getResult());
 
@@ -301,6 +306,8 @@ public class UserController {
 		if (u == null) {
 			return new JsonResult();
 		}
+		
+		u.setPassword(null);
 
 		JsonResult rs = new JsonResult();
 
@@ -397,6 +404,7 @@ public class UserController {
 		// String code = SendSMS.sendSMS("cf_shzywh", "cfshzywh", phone, mess);
 
 		String code = SendSMS.sendSMS("cf_itzmao", "itzmao123", phone, mess);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SMS:"+code + ",phone:"+phone);
 		if (code.endsWith("2")) {
 
 			// Member member = new Member();
@@ -552,28 +560,7 @@ public class UserController {
 	}
 	
 	
-	/**
-	 * 修改密码
-	 * @param uid
-	 * @param password
-	 * @return
-	 */
-	@RequestMapping(value = "/json/uppassword")
-	public JsonResult jsonUpPassword(@RequestParam("uid") UUID uid, @RequestParam("password") String password) {
-		JsonResult rs = new JsonResult();
-		
-		User user = userService.get(uid);
-		
-		user.setPassword(password);
-		 
-		userService.saveOrUpdate(user);
-		
-		rs.setCode(JsonResult.SUCCESS);
-		rs.setData(user);
-		rs.setMsg("修改成功!");
-	
-		return rs;
-	}
+
 
 	
 	/**
@@ -604,7 +591,7 @@ public class UserController {
 	
 	
 	/**
-	 * 修改密码
+	 * 修改昵称
 	 * @param uid
 	 * @param password
 	 * @return
@@ -623,6 +610,207 @@ public class UserController {
 		rs.setData(user);
 		rs.setMsg("修改成功!");
 	
+		return rs;
+	}
+	
+	
+	/**
+	 * 修改密码第一步
+	 * 发送短信
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/uppasswordsms")
+	public JsonResult jsonUppasswordSms(@RequestParam("uid") UUID uid,HttpServletRequest request) {
+		JsonResult rs = new JsonResult();
+		
+		User user = userService.get(uid);
+
+		if(user==null)
+		{
+			rs.setMsg("用户不存在");
+			return rs;
+		}
+		
+
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+
+		String mess = "您的验证码是：" + sb.toString()
+				+ "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！";
+
+		String code = SendSMS.sendSMS("cf_itzmao", "itzmao123", user.getPhone(), mess);
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SMS:"+code + ",phone:"+user.getPhone());
+		//验证码发送成功
+		if (code.endsWith("2")) {
+			user.setLastModifiedBy(sb.toString());
+			userService.saveOrUpdate(user);
+			
+			rs.setCode(JsonResult.SUCCESS);
+			return rs;
+		}
+
+
+		return rs;
+
+	}
+	
+	
+	/**
+	 * 修改手机第2步
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/upphone")
+	public JsonResult jsonUpPhone(@RequestParam("uid") UUID uid, @RequestParam("phone") String phone,@RequestParam("code") String code) {
+		JsonResult rs = new JsonResult();
+		User user = userService.get(uid);
+		if(!user.getLastModifiedBy().equals(code))
+		{
+			rs.setMsg("验证码不正确");
+			return rs;
+		}
+		
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		criteria.add(Restrictions.eq("phone", phone));
+		List<User> list = userService.findByCriteria(criteria);
+		
+		if(!list.isEmpty())
+		{
+			rs.setMsg("手机号已被注册");
+			return rs;
+		}
+		
+		
+		 
+		user.setPhone(phone);
+		user.setUsername(phone);
+		userService.saveOrUpdate(user);
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		rs.setMsg("修改成功!");
+	
+		return rs;
+	}
+	
+	/**
+	 * 修改密码第2步
+	 * @param uid
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value = "/json/uppassword")
+	public JsonResult jsonUpPassword(@RequestParam("uid") UUID uid, @RequestParam("password") String password,@RequestParam("code") String code) {
+		JsonResult rs = new JsonResult();
+		User user = userService.get(uid);
+		if(!user.getLastModifiedBy().equals(code))
+		{
+			rs.setMsg("验证码不正确");
+			return rs;
+		}
+		 
+		user.setPassword(password);
+		userService.saveOrUpdate(user);
+		
+		user.setPassword(null);
+		
+		rs.setCode(JsonResult.SUCCESS);
+		rs.setData(user);
+		rs.setMsg("修改成功!");
+	
+		return rs;
+	}
+	
+	 
+	/**
+	 * 找回密码第一步发短信
+	 * @param username
+	 * @return
+	 */
+	@RequestMapping(value = "/json/findpasswordsms")
+	public JsonResult jsonFindPasswordSms(@RequestParam("username") String username) {
+		JsonResult rs = new JsonResult();
+		
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		criteria.add(Restrictions.eq("username", username));
+		
+		List<User> list = userService.findByCriteria(criteria);
+		if(list.isEmpty())
+		{
+			return rs;
+		}
+		
+		User user = list.get(0);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+		sb.append(SendSMS.getRand());
+
+		String mess = "您的验证码是：" + sb.toString()
+				+ "。请不要把验证码泄露给其他人。如非本人操作，可不用理会！";
+
+		String code = SendSMS.sendSMS("cf_itzmao", "itzmao123", user.getPhone(), mess);
+		
+		Logger.getLogger(this.getClass().getName()).log(Level.INFO, "SMS:"+code + ",phone:"+user.getPhone());
+		//验证码发送成功
+		if (code.endsWith("2")) {
+			user.setLastModifiedBy(sb.toString());
+			userService.saveOrUpdate(user);
+			
+			user.setPassword(null);
+			
+			rs.setCode(JsonResult.SUCCESS);
+			rs.setData(user);
+			
+			return rs;
+		}
+		 
+		
+		return rs;
+	}
+	
+	
+	/**
+	 * 修改用户信息
+	 * @param username
+	 * @return
+	 */
+	@RequestMapping(value = "/json/upuserinfo")
+	public JsonResult jsonUpuserinfo(@RequestParam("uid") UUID uid,HttpServletRequest request) {
+		JsonResult rs = new JsonResult();
+		User user = userService.get(uid);
+		
+		if(user.getIsDelete()==1)
+		{
+			return rs;
+		}
+		
+		if(!StringUtils.isEmpty(request.getParameter("nickname")))
+		{
+			user.setNickname(request.getParameter("nickname"));
+		}
+		
+		if(!StringUtils.isEmpty(request.getParameter("info")))
+		{
+			user.setInfo(request.getParameter("info"));
+		}
+		
+		userService.saveOrUpdate(user);
+		rs.setCode(JsonResult.SUCCESS);
 		return rs;
 	}
 }

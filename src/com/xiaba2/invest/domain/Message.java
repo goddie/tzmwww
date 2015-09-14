@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import com.xiaba2.core.BaseUUIDEntity;
 
 /**
- * 留言
+ * 聊天纪录
  * @author goddie
  *
  */

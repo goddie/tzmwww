@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Controller;
@@ -43,9 +44,11 @@ public class UserProductController {
 	 */
 	@RequestMapping(value = "/json/mylist")
 	public JsonResult jsonMyList(@RequestParam("p") int p,
-			@RequestParam("uid") UUID uid, HttpServletRequest request) {
+			@RequestParam("uid") UUID uid,@RequestParam("status") int status,HttpServletRequest request) {
 
 		JsonResult rs=new JsonResult();
+		
+ 
 		
 		User u = userService.get(uid);
 
@@ -57,6 +60,15 @@ public class UserProductController {
 		DetachedCriteria criteria = userProductService.createDetachedCriteria();
 		criteria.add(Restrictions.eq("isDelete", 0));
 		criteria.add(Restrictions.eq("user", u));
+		
+		//String s1 = request.getParameter("status");
+		if(status!=-1)
+		{
+//			int status = Integer.parseInt(s1);
+			criteria.add(Restrictions.eq("status", status));
+		}
+		
+		
 
 		page = userProductService.findPageByCriteria(criteria, page);
 

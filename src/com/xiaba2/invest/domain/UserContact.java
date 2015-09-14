@@ -46,21 +46,26 @@ public class UserContact extends BaseUUIDEntity {
 	private User contact;
 	
 	/**
-	 * 
+	 * 小猫推荐
 	 */
 	@Column
 	private int isRecommend;
+ 
 	
-	
+	/**
+	 * 粉丝
+	 */
 	@Column
 	private int isFan;
 	
 	
+	/**
+	 * 关注他
+	 */
 	@Column
 	private int isFollow;
 	
-	
-	
+ 
 
 	public int getIsFan() {
 		return isFan;
