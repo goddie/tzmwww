@@ -52,14 +52,14 @@ public class UserContactService extends BaseService<UserContact, UUID> {
 			
 			
 			
-			UserContact userContact =new UserContact();
-			userContact.setName(sendTo.getNickname());
-			userContact.setUser(from);
-			userContact.setContact(sendTo);
-			userContact.setIsFollow(1);
-			userContact.setCreatedDate(new Date());
-			userContact.setPhone(sendTo.getPhone());
-			userContactDao.save(userContact);
+//			UserContact userContact =new UserContact();
+//			userContact.setName(sendTo.getNickname());
+//			userContact.setUser(from);
+//			userContact.setContact(sendTo);
+//			userContact.setIsFollow(1);
+//			userContact.setCreatedDate(new Date());
+//			userContact.setPhone(sendTo.getPhone());
+//			userContactDao.save(userContact);
 		}else
 		{
 			UserContact userContact = list.get(0);
@@ -76,15 +76,15 @@ public class UserContactService extends BaseService<UserContact, UUID> {
 		
 		if(list2.isEmpty())
 		{
-			UserContact userContact =new UserContact();
-			userContact.setUser(sendTo);
-			userContact.setContact(from);
-			userContact.setIsFan(1);
-			userContact.setCreatedDate(new Date());
-			userContact.setName(from.getNickname());
-			userContact.setPhone(from.getPhone());
-			
-			userContactDao.save(userContact);	
+//			UserContact userContact =new UserContact();
+//			userContact.setUser(sendTo);
+//			userContact.setContact(from);
+//			userContact.setIsFan(1);
+//			userContact.setCreatedDate(new Date());
+//			userContact.setName(from.getNickname());
+//			userContact.setPhone(from.getPhone());
+//			
+//			userContactDao.save(userContact);	
 		}
 		else
 		{

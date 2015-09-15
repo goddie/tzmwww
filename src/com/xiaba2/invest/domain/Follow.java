@@ -36,6 +36,39 @@ public class Follow extends BaseUUIDEntity {
 	 */
 	@Column
 	private int status;
+	
+	/**
+	 * 关注我
+	 */
+	@Column
+	private int isFan;
+	
+	/**
+	 * 我已关注
+	 */
+	@Column
+	private int isFollow;
+
+	
+
+	public int getIsFan() {
+		return isFan;
+	}
+
+
+	public void setIsFan(int isFan) {
+		this.isFan = isFan;
+	}
+
+
+	public int getIsFollow() {
+		return isFollow;
+	}
+
+
+	public void setIsFollow(int isFollow) {
+		this.isFollow = isFollow;
+	}
 
 
 	public User getFrom() {
