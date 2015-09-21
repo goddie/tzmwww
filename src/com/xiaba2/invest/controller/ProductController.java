@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xiaba2.core.JsonResult;
 import com.xiaba2.core.Page;
+import com.xiaba2.invest.domain.KeyValue;
 import com.xiaba2.invest.domain.Product;
 import com.xiaba2.invest.domain.ProductInfo;
 import com.xiaba2.invest.domain.TradeRecord;
@@ -32,6 +33,7 @@ import com.xiaba2.invest.service.ProductService;
 import com.xiaba2.invest.service.TradeRecordService;
 import com.xiaba2.invest.service.UserService;
 import com.xiaba2.invest.vo.ProductVO;
+import com.xiaba2.util.HttpUtil;
 import com.xiaba2.util.ImportUtil;
 
 @RestController
@@ -52,6 +54,76 @@ public class ProductController {
 	@Resource
 	private IncomeRecordService incomeRecordService;
 
+	
+	
+	
+	
+	
+	/**
+	 * 新增产品
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/add")
+	public ModelAndView adminAdd() {
+		ModelAndView mv = new ModelAndView("admin_product_add");
+ 
+		return mv;
+	}
+	
+	/**
+	 * 新增产品
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/edit")
+	public ModelAndView adminEdit(@RequestParam("id") UUID pid) {
+		ModelAndView mv = new ModelAndView("admin_product_edit");
+ 
+		Product entity = productService.get(pid);
+		mv.addObject("entity", entity);
+		
+		return mv;
+	}
+	
+	
+	/**
+	 * 删除操作
+	 * @param uid
+	 * @return
+	 */
+	@RequestMapping(value = "/action/del")
+	public ModelAndView actionDel(@RequestParam("id") UUID uid) {
+
+		ModelAndView mv = new ModelAndView("redirect:/product/admin/list?p=1");
+		
+		Product u = productService.get(uid);
+		
+		u.setIsDelete(1);
+		
+		productService.saveOrUpdate(u);
+		
+
+		return mv;
+	}
+
+	
+	/**
+	 * 新增产品
+	 * @return
+	 */
+	@RequestMapping(value = "/action/add")
+	public ModelAndView actionAdd(Product entity) {
+		ModelAndView mv = new ModelAndView("redirect:/product/admin/list?p=1");
+		
+		entity.setCreatedDate(new Date());
+		
+		productService.save(entity);
+		
+		
+		return mv;
+	}
+	
+	
+	
 	/**
 	 * 导入产品数据
 	 * 
@@ -102,25 +174,48 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/admin/list")
-	public ModelAndView getList() {
+	public ModelAndView getList(@RequestParam("p") int p, HttpServletRequest request) {
 
-		List<Product> list = productService.loadAll();
+//		List<Product> list = productService.loadAll();
 
 		ModelAndView mv = new ModelAndView("admin_product_list");
+		
+		Page<Product> page = new Page<Product>();
+		page.setPageSize(HttpUtil.PAGE_SIZE);
+		page.setPageNo(p);
+		page.addOrder("createdDate", "desc");
 
-		mv.addObject("list", list);
+		DetachedCriteria criteria = productService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		
+		
+		HttpUtil.addSearchLike(criteria, mv, request, "CPMC");
+//		HttpUtil.addSearchEq(criteria, mv, request, "CPBH");
+		String value = request.getParameter("CPBH");
+		if(!StringUtils.isEmpty(value))
+		{
+			criteria.add(Restrictions.eq("CPBH", Integer.parseInt(value)));
+			mv.addObject("CPBH",value);
+		}
+		
+ 
+ 
+		page = productService.findPageByCriteria(criteria, page);
 
+		mv.addObject("list", page.getResult());
+		mv.addObject("pageHtml",page.genPageHtml(request));
+		
 		return mv;
 	}
 
-	@RequestMapping(value = "/add")
-	public ModelAndView add(Product entity) {
-		entity.setCreatedDate(new Date());
-
-		productService.save(entity);
-
-		return new ModelAndView("redirect:/product/admin/add");
-	}
+//	@RequestMapping(value = "/add")
+//	public ModelAndView add(Product entity) {
+//		entity.setCreatedDate(new Date());
+//
+//		productService.save(entity);
+//
+//		return new ModelAndView("redirect:/product/admin/add");
+//	}
 
 	/**
 	 * 获取列表

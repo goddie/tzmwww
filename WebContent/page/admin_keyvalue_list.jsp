@@ -64,14 +64,12 @@
 													<td class="">${m.dictValue}</td>
 
 													<td class="action">
-														<div style="display: none">
-															<a
-																href="${pageContext.request.contextPath}/team/edit/${m.id}">
+														<div >
+															<a style="display:none;"
+																href="${pageContext.request.contextPath}/keyvalue/admin/edit?id=${m.id}">
 																编辑 </a> <a
-																href="${pageContext.request.contextPath}/team/del/${m.id}">
-																删除 </a> <a
-																href="${pageContext.request.contextPath}/team/member/">
-																查看成员 </a>
+																href="${pageContext.request.contextPath}/keyvalue/action/del?id=${m.id}">
+																删除 </a> 
 														</div>
 													</td>
 												</tr>

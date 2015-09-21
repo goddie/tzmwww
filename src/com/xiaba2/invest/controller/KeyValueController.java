@@ -1,6 +1,7 @@
 package com.xiaba2.invest.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.xiaba2.core.JsonResult;
 import com.xiaba2.core.Page;
 import com.xiaba2.invest.domain.KeyValue;
+import com.xiaba2.invest.domain.User;
 import com.xiaba2.invest.service.KeyValueService;
 
 @Controller
@@ -75,6 +77,27 @@ public class KeyValueController {
 		}
 
 		keyValueService.save(entity);
+
+		return mv;
+	}
+	
+	
+	/**
+	 * 删除操作
+	 * @param uid
+	 * @return
+	 */
+	@RequestMapping(value = "/action/del")
+	public ModelAndView actionDel(@RequestParam("id") UUID uid) {
+
+		ModelAndView mv = new ModelAndView("redirect:/keyvalue/admin/list?p=1");
+		
+		KeyValue u = keyValueService.get(uid);
+		
+		u.setIsDelete(1);
+		
+		keyValueService.saveOrUpdate(u);
+		
 
 		return mv;
 	}

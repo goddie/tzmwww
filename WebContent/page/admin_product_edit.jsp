@@ -12,17 +12,12 @@
 
 	<jsp:include page="/resource/inc/top_nav.jsp"></jsp:include>
 
-
-
 	<div class="container">
 		<div class="row">
 			<div class="col-md-2 bootstrap-admin-col-left">
 				<jsp:include page="/resource/inc/product_left.jsp"></jsp:include>
 			</div>
 			<div class="col-md-10">
-
-
-
 
 				<div class="row">
 					<div class="col-lg-12">
@@ -35,27 +30,28 @@
 						</c:if>
 						<div class="panel panel-default bootstrap-admin-no-table-panel">
 							<div class="panel-heading">
-								<div class="text-muted bootstrap-admin-box-title">新增产品</div>
+								<div class="text-muted bootstrap-admin-box-title">编辑产品</div>
 							</div>
 							<div
 								class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
 								<form
 									action="${pageContext.request.contextPath}/product/action/add"
 									name="form1" method="post" class="form-horizontal">
+									<input type="hidden" name="pid" value="${entity.id }" />
 									<fieldset>
 
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="typeahead">产品编号</label>
 											<div class="col-lg-4">
 												<input name="CPBH" type="text" class="form-control"
-													id="CPBH" value="0" />
+													id="CPBH" value="${entity.CPBH }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">产品简称</label>
 											<div class="col-lg-4">
 												<input name="CPJC" type="text" class="form-control"
-													id="CPJC" value="" />
+													id="CPJC" value="${entity.CPJC }" />
 
 											</div>
 
@@ -66,14 +62,14 @@
 											<label class="col-lg-2 control-label" for="typeahead">产品名</label>
 											<div class="col-lg-4">
 												<input name="CPMC" type="text" class="form-control"
-													id="CPMC" value="" />
+													id="CPMC" value="${entity.CPMC }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">产品期限</label>
 											<div class="col-lg-4">
 												<input name="CPQX" type="text" class="form-control"
-													id="CPJC" value="0" />
+													id="CPJC" value="${entity.CPQX }" />
 
 											</div>
 
@@ -84,7 +80,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">产品系列</label>
 											<div class="col-lg-4">
 												<input name="CPXL" type="text" class="form-control"
-													id="CPXL" value="0" />
+													id="CPXL" value="${entity.CPXL }" />
 
 											</div>
 
@@ -97,14 +93,14 @@
 											<label class="col-lg-2 control-label" for="typeahead">发行费用最低</label>
 											<div class="col-lg-4">
 												<input name="FXFYZD" type="text" class="form-control"
-													id="FXFYZD" value="0" />
+													id="FXFYZD" value="${entity.FXFYZD }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">发行费用最高</label>
 											<div class="col-lg-4">
 												<input name="FXFYZG" type="text" class="form-control"
-													id="FXFYZG" value="0" />
+													id="FXFYZG" value="${entity.FXFYZG }" />
 
 											</div>
 
@@ -114,14 +110,14 @@
 											<label class="col-lg-2 control-label" for="typeahead">收益率最低</label>
 											<div class="col-lg-4">
 												<input name="SYLZD" type="text" class="form-control"
-													id="SYLZD" value="0" />
+													id="SYLZD" value="${entity.SYLZD }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">收益率最高</label>
 											<div class="col-lg-4">
 												<input name="SYLZG" type="text" class="form-control"
-													id="SYLZG" value="0" />
+													id="SYLZG" value="${entity.SYLZG }" />
 
 											</div>
 
@@ -133,7 +129,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">收益率说明</label>
 											<div class="col-lg-4">
 												<input name="SYLSM" type="text" class="form-control"
-													id="SYLSM" value="" />
+													id="SYLSM" value="${entity.SYLSM }" />
 
 											</div>
 
@@ -148,14 +144,14 @@
 											<label class="col-lg-2 control-label" for="typeahead">收益类型说明</label>
 											<div class="col-lg-4">
 												<input name="SYLXSM" type="text" class="form-control"
-													id="SYLXSM" value="" />
+													id="SYLXSM" value="${entity.SYLXSM }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">收益类型</label>
 											<div class="col-lg-4">
 												<input name="SYLX" type="text" class="form-control"
-													id="SYLX" value="0" />
+													id="SYLX" value="${entity.SYLX }" />
 
 											</div>
 
@@ -166,14 +162,14 @@
 											<label class="col-lg-2 control-label" for="typeahead">付息方式</label>
 											<div class="col-lg-4">
 												<input name="FXFS" type="text" class="form-control"
-													id="FXFS" value="0" />
+													id="FXFS" value="${entity.FXFS }" />
 
 											</div>
 
 											<label class="col-lg-2 control-label" for="typeahead">投资领域</label>
 											<div class="col-lg-4">
 												<input name="TZLY" type="text" class="form-control"
-													id="TZLY" value="0" />
+													id="TZLY" value="${entity.TZLY }" />
 
 											</div>
 
@@ -184,7 +180,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">所在区域</label>
 											<div class="col-lg-4">
 												<input name="SZQY" type="text" class="form-control"
-													id="SZQY" value="0" />
+													id="SZQY" value="${entity.SZQY }" />
 
 											</div>
 
@@ -192,7 +188,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="DXPB" type="text" class="form-control"
-													id="DXPB" value="0" />
+													id="DXPB" value="${entity.DXPB }" />
 
 											</div>
 
@@ -203,7 +199,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">所在区域</label>
 											<div class="col-lg-4">
 												<input name="SZQY" type="text" class="form-control"
-													id="SZQY" value="" />
+													id="SZQY" value="${entity.SZQY }" />
 
 											</div>
 
@@ -211,7 +207,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="DXPB" type="text" class="form-control"
-													id="DXPB" value="" />
+													id="DXPB" value="${entity.DXPB }" />
 
 											</div>
 
@@ -222,7 +218,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">大小配比说明</label>
 											<div class="col-lg-4">
 												<input name="DXPBSM" type="text" class="form-control"
-													id="DXPBSM" value="" />
+													id="DXPBSM" value="${entity.DXPBSM }" />
 
 											</div>
 
@@ -236,7 +232,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">质押物</label>
 											<div class="col-lg-4">
 												<input name="ZYW" type="text" class="form-control" id="ZYW"
-													value="" />
+													value="${entity.ZYW }" />
 
 											</div>
 
@@ -244,7 +240,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="FXDJ" type="text" class="form-control"
-													id="FXDJ" value="0" />
+													id="FXDJ" value="${entity.FXDJ }" />
 
 											</div>
 
@@ -255,7 +251,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">发行机构</label>
 											<div class="col-lg-4">
 												<input name="FXJG" type="text" class="form-control"
-													id="FXJG" value="0" />
+													id="FXJG" value="${entity.FXJG }" />
 
 											</div>
 
@@ -263,7 +259,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="GUIMO" type="text" class="form-control"
-													id="GUIMO" value="0" />
+													id="GUIMO" value="${entity.GUIMO }" />
 
 											</div>
 
@@ -280,7 +276,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="TZMKED" type="text" class="form-control"
-													id="TZMKED" value="0" />
+													id="TZMKED" value="${entity.TZMKED }" />
 
 											</div>
 
@@ -290,7 +286,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">已进款金额</label>
 											<div class="col-lg-4">
 												<input name="YJKJE" type="text" class="form-control"
-													id="YJKJE" value="0" />
+													id="YJKJE" value="${entity.YJKJE }" />
 
 											</div>
 
@@ -298,7 +294,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="MJZH" type="text" class="form-control"
-													id="MJZH" value="" />
+													id="MJZH" value="${entity.MJZH }" />
 
 											</div>
 
@@ -308,7 +304,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">是否推荐</label>
 											<div class="col-lg-4">
 												<input name="SFTJ" type="text" class="form-control"
-													id="SFTJ" value="0" />
+													id="SFTJ" value="${entity.SFTJ }" />
 
 											</div>
 
@@ -316,7 +312,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="SFBX" type="text" class="form-control"
-													id="SFBX" value="0" />
+													id="SFBX" value="${entity.SFBX }" />
 
 											</div>
 
@@ -327,7 +323,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">推荐星级</label>
 											<div class="col-lg-4">
 												<input name="TJXJ" type="text" class="form-control"
-													id="TJXJ" value="0" />
+													id="TJXJ" value="${entity.TJXJ }" />
 
 											</div>
 
@@ -335,7 +331,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="JKSD" type="text" class="form-control"
-													id="JKSD" value="0" />
+													id="JKSD" value="${entity.JKSD }" />
 
 											</div>
 
@@ -346,7 +342,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">结款时点说明</label>
 											<div class="col-lg-4">
 												<input name="JKSDSM" type="text" class="form-control"
-													id="JKSDSM" value="" />
+													id="JKSDSM" value="${entity.JKSDSM }" />
 
 											</div>
 
@@ -354,7 +350,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="QXRQ" type="text" class="form-control"
-													id="QXRQ" value="" />
+													id="QXRQ" value="${entity.QXRQ }" />
 
 											</div>
 
@@ -365,7 +361,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">到期日</label>
 											<div class="col-lg-4">
 												<input name="DQRQ" type="text" class="form-control"
-													id="DQRQ" value="" />
+													id="DQRQ" value="${entity.DQRQ }" />
 
 											</div>
 
@@ -373,7 +369,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="JDSM" type="text" class="form-control"
-													id="JDSM" value="" />
+													id="JDSM" value="${entity.JDSM }" />
 
 											</div>
 
@@ -382,8 +378,8 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="typeahead">融资方介绍</label>
 											<div class="col-lg-4">
-												<input name="DQRQ" type="text" class="form-control"
-													id="DQRQ" value="" />
+												<input name="RZFJS" type="text" class="form-control"
+													id="RZFJS" value="${entity.RZFJS }" />
 
 											</div>
 
@@ -391,7 +387,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="JDSM" type="text" class="form-control"
-													id="JDSM" value="" />
+													id="JDSM" value="${entity.JDSM }" />
 
 											</div>
 
@@ -401,8 +397,8 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="typeahead">融资方介绍</label>
 											<div class="col-lg-4">
-												<input name="DQRQ" type="RZFJS" class="form-control"
-													id="RZFJS" value="" />
+												<input name="RZFJS" type="RZFJS" class="form-control"
+													id="RZFJS" value="${entity.RZFJS }" />
 
 											</div>
 
@@ -410,7 +406,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="JDSM" type="text" class="form-control"
-													id="JDSM" value="" />
+													id="JDSM" value="${entity.JDSM }" />
 
 											</div>
 
@@ -421,7 +417,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">短信模板</label>
 											<div class="col-lg-4">
 												<input name="DXMB" type="RZFJS" class="form-control"
-													id="DXMB" value="" />
+													id="DXMB" value="${entity.DXMB }" />
 
 											</div>
 
@@ -429,7 +425,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="ZJYT" type="text" class="form-control"
-													id="ZJYT" value="" />
+													id="ZJYT" value="${entity.ZJYT }" />
 
 											</div>
 
@@ -439,8 +435,8 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="typeahead">短信模板</label>
 											<div class="col-lg-4">
-												<input name="DXMB" type="RZFJS" class="form-control"
-													id="DXMB" value="" />
+												<input name="DXMB" type="text" class="form-control"
+													id="DXMB" value="${entity.DXMB }" />
 
 											</div>
 
@@ -448,7 +444,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="ZJYT" type="text" class="form-control"
-													id="ZJYT" value="" />
+													id="ZJYT" value="${entity.ZJYT }" />
 
 											</div>
 
@@ -458,8 +454,8 @@
 										<div class="form-group">
 											<label class="col-lg-2 control-label" for="typeahead">风控措施</label>
 											<div class="col-lg-4">
-												<input name="FKCS" type="RZFJS" class="form-control"
-													id="FKCS" value="" />
+												<input name="FKCS" type="text" class="form-control"
+													id="FKCS" value="${entity.FKCS }" />
 
 											</div>
 
@@ -467,7 +463,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="HKLY" type="text" class="form-control"
-													id="HKLY" value="" />
+													id="HKLY" value="${entity.HKLY }" />
 
 											</div>
 
@@ -478,7 +474,7 @@
 											<label class="col-lg-2 control-label" for="typeahead">项目亮点</label>
 											<div class="col-lg-4">
 												<input name="XMLD" type="text" class="form-control"
-													id="XMLD" value="" />
+													id="XMLD" value="${entity.XMLD }" />
 
 											</div>
 
@@ -486,7 +482,7 @@
 											</label>
 											<div class="col-lg-4">
 												<input name="CPSM" type="text" class="form-control"
-													id="CPSM" value="" />
+													id="CPSM" value="${entity.CPSM }" />
 
 											</div>
 
@@ -497,24 +493,11 @@
 											<label class="col-lg-2 control-label" for="typeahead">产品文档url</label>
 											<div class="col-lg-4">
 												<input name="CPWDURL" type="text" class="form-control"
-													id="CPWDURL" value="" />
+													id="CPWDURL" value="${entity.CPWDURL }" />
 
 											</div>
 
-
-
 										</div>
-
-
-
-										<div class="form-group">
-											<input name="CPZT" type="hidden" class="form-control"
-												id="CPZT" value="1" /> <input name="SFYX" type="hidden"
-												class="form-control" id="SFYX" value="1" />
-										</div>
-
-
-
 
 										<button type="submit" class="btn btn-primary">提交</button>
 										<button type="reset" class="btn btn-default">取消</button>

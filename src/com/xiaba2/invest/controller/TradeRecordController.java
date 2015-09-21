@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpRequest;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.xiaba2.core.JsonResult;
 import com.xiaba2.core.Page;
 import com.xiaba2.invest.domain.Product;
@@ -26,6 +26,7 @@ import com.xiaba2.invest.domain.User;
 import com.xiaba2.invest.service.ProductService;
 import com.xiaba2.invest.service.TradeRecordService;
 import com.xiaba2.invest.service.UserService;
+import com.xiaba2.util.HttpUtil;
 
 @RestController
 @RequestMapping("/traderecord")
@@ -39,6 +40,58 @@ public class TradeRecordController {
 	@Resource
 	private ProductService productService;
 
+	 
+	@RequestMapping(value = "/admin/list")
+	public ModelAndView adminList(@RequestParam("p") int p,HttpServletRequest request) {
+
+		ModelAndView mv = new ModelAndView("admin_traderecord_list");
+		
+		Page<TradeRecord> page = new Page<TradeRecord>();
+		page.setPageSize(HttpUtil.PAGE_SIZE);
+		page.setPageNo(p);
+		page.addOrder("createdDate", "desc");
+
+		DetachedCriteria criteria = tradeRecordService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		
+		
+		String typeStr =request.getParameter("type");
+		if(!StringUtils.isEmpty(typeStr))
+		{
+			int type  = Integer.parseInt(typeStr);
+			criteria.add(Restrictions.eq("type", type));
+		}
+
+		//HttpUtil.addSearchLike(criteria, mv, request, "username");	
+		page = tradeRecordService.findPageByCriteria(criteria, page);
+
+		mv.addObject("list", page.getResult());
+		mv.addObject("pageHtml",page.genPageHtml(request));
+
+		return mv;
+	}
+	
+	
+	/**
+	 * 删除
+	 * @param uid
+	 * @return
+	 */
+	@RequestMapping(value = "/action/del")
+	public ModelAndView actionDel(@RequestParam("id") UUID uid) {
+
+		ModelAndView mv = new ModelAndView("redirect:/traderecord/admin/list");
+		
+		TradeRecord u = tradeRecordService.get(uid);
+		
+		u.setIsDelete(1);
+		
+		tradeRecordService.saveOrUpdate(u);
+		
+
+		return mv;
+	}
+	
 	/**
 	 * 充值
 	 * 

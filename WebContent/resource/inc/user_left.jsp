@@ -3,9 +3,9 @@
 <ul class="nav navbar-collapse collapse bootstrap-admin-navbar-side">
 	<li><a href="#"><i class="glyphicon glyphicon-chevron-down"></i>用户管理</a>
 		<ul class="nav navbar-collapse bootstrap-admin-navbar-side">
-			<li><a href="${pageContext.request.contextPath}"><i
+			<li><a href="${pageContext.request.contextPath}/user/admin/list?p=1"><i
 					class="glyphicon glyphicon-chevron-right"></i>用户列表</a></li>
-			<li><a href="${pageContext.request.contextPath}/page/admin_user_add.jsp"><i
+			<li><a href="${pageContext.request.contextPath}/user/admin/add"><i
 					class="glyphicon glyphicon-chevron-right"></i>新增用户</a></li>
 
 		</ul></li>

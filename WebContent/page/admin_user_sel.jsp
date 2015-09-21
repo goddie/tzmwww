@@ -31,7 +31,10 @@
 								<th role="columnheader" style="width: 10%;">头像</th>
 								<th role="columnheader" style="width: 15%;">用户名</th>
 								<th role="columnheader" style="width: 10%;">昵称</th>
+
 								<th role="columnheader" style="width: 10%;">电话</th>
+
+
 								<th role="columnheader">注册时间</th>
 								<th role="columnheader" style="width: 20%;">操作</th>
 							</tr>
@@ -46,9 +49,9 @@
 									<td class=""><img src="${m.avatar }" width="30"
 										height="30" /></td>
 									<td class="">${m.username}</td>
-
+									<td class="">${m.city}</td>
 									<td class="center ">${m.nickname}</td>
-									<td class="center ">${m.phone}</td>
+
 									<td class="center ">${m.createdDate}</td>
 									<td class="action">
 										<button type="button" class="btn btn-primary"
@@ -58,7 +61,7 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<div class="row">
+					<div class="row" style="display:none">
 
 						<div class="col-md-6">
 							<div class="dataTables_paginate paging_bootstrap">

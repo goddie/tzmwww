@@ -2,6 +2,7 @@ package com.xiaba2.invest.controller;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+ 
 import com.xiaba2.cms.controller.AlbumController;
 import com.xiaba2.cms.domain.Member;
 import com.xiaba2.cms.service.MemberService;
@@ -53,9 +55,40 @@ public class UserController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/admin/{name}")
-	public ModelAndView getPage(@PathVariable String name) {
-		return new ModelAndView("admin_user_" + name);
+//	@RequestMapping(value = "/admin/{name}")
+//	public ModelAndView getPage(@PathVariable String name) {
+//		return new ModelAndView("admin_user_" + name);
+//	}
+//	
+	
+	@RequestMapping(value = "/admin/list")
+	public ModelAndView adminList(@RequestParam("p") int p, HttpServletRequest request) {
+
+		ModelAndView mv = new ModelAndView("admin_user_list");
+
+		Page<User> page = new Page<User>();
+		page.setPageSize(HttpUtil.PAGE_SIZE);
+		page.setPageNo(p);
+		page.addOrder("createdDate", "desc");
+
+		DetachedCriteria criteria = userService.createDetachedCriteria();
+		criteria.add(Restrictions.eq("isDelete", 0));
+		
+		
+		HttpUtil.addSearchLike(criteria, mv, request, "username");
+		HttpUtil.addSearchLike(criteria, mv, request, "nickname");
+		HttpUtil.addSearchLike(criteria, mv, request, "phone");
+ 
+		
+		
+		
+		page = userService.findPageByCriteria(criteria, page);
+
+		mv.addObject("list", page.getResult());
+ 
+		mv.addObject("pageHtml",page.genPageHtml(request));
+
+		return mv;
 	}
  
 
@@ -93,9 +126,44 @@ public class UserController {
 		return mv;
 
 	}
+	
+	
+	/**
+	 * 删除操作
+	 * @param uid
+	 * @return
+	 */
+	@RequestMapping(value = "/action/del")
+	public ModelAndView actionDel(@RequestParam("uid") UUID uid) {
+
+		ModelAndView mv = new ModelAndView("redirect:/user/admin/list");
+		
+		User u = userService.get(uid);
+		
+		u.setIsDelete(1);
+		
+		userService.saveOrUpdate(u);
+		
+
+		return mv;
+	}
+	
+	
+	/**
+	 * 新增页面
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/add")
+	public ModelAndView adminAdd() {
+		ModelAndView mv = new ModelAndView("admin_user_add");
+ 
+
+		return mv;
+	}
+	
 
 	@RequestMapping(value = "/admin/sel")
-	public ModelAndView adminList() {
+	public ModelAndView adminSel() {
 		ModelAndView mv = new ModelAndView("admin_user_sel");
 
 		Page<User> page = new Page<User>();
