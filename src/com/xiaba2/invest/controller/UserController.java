@@ -340,7 +340,8 @@ public class UserController {
 		if (!list.isEmpty()) {
 
 			User user = list.get(0);
-
+			user.setPassword(null);
+			
 			JsonResult rs = new JsonResult();
 			rs.setCode(JsonResult.SUCCESS);
 			rs.setData(user);

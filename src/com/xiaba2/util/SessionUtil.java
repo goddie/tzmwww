@@ -59,6 +59,20 @@ public class SessionUtil {
 		}
 		return instance;
 	}
+	
+	
+	public void removeCookie(String key)
+	{
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+				.getResponse();
+
+		Cookie cookie = new Cookie(key, null);
+		cookie.setMaxAge(0);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		
+	}
+	
 
 	/**
 	 * 登录的User
@@ -211,7 +225,7 @@ public class SessionUtil {
 			// UserService service =
 			// ApplicationContext.this.getBean(UserService.class);
 
-			// entity = userService.get(UUID.fromString(mc.getUuid()));
+			entity = userService.get(UUID.fromString(mc.getUuid()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -227,31 +241,36 @@ public class SessionUtil {
 	 */
 	public void saveMemberCookie(Member entity) {
 
+ 
 		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getResponse();
 
 		if (entity == null) {
 			Cookie cookie = new Cookie("member", null);
-			cookie.setMaxAge(-1);// 保留7天
+			cookie.setMaxAge(-1);
+			cookie.setPath("/");
 			response.addCookie(cookie);
 
 			return;
 		}
-
+		
 		MemberCookie mc = new MemberCookie();
 		mc.setUsername(entity.getUsername());
 		mc.setUuid(entity.getId().toString());
-
 		// Cookie cookie = WebUtils.getCookie(request, "login");
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, Boolean.TRUE);
 		String json = "";
 		try {
+
 			json = mapper.writeValueAsString(mc);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
+
 		Cookie cookie = new Cookie("member", json);
 		cookie.setMaxAge(60 * 60 * 24 * 7);// 保留7天
+		cookie.setPath("/");
 		response.addCookie(cookie);
 	}
 
@@ -261,31 +280,34 @@ public class SessionUtil {
 	 * @param request
 	 * @return
 	 */
-	public String getMemberIdFromCookie(HttpServletRequest request) {
+	public Member getMemberFromCookie(HttpServletRequest request) {
 		Cookie cookie = WebUtils.getCookie(request, "member");
 		if (cookie == null) {
 			return null;
 		}
 		String json = cookie.getValue();
 		ObjectMapper mapper = new ObjectMapper();
-		// mapper.enableDefaultTyping();
-		// mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES,
-		// Boolean.TRUE);
-		// Member entity = null;
-		// ServletContext application =
-		// request.getSession().getServletContext();
-		// WebApplicationContext springContext =
-		// WebApplicationContextUtils.getWebApplicationContext(application);
-		// MemberService memberService = (MemberService)
-		// springContext.getBean("memberService");
+
+		Member entity = null;
+
+		ServletContext application = request.getSession().getServletContext();
+		WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext(application);
+		if (springContext == null)
+			return null;
+		MemberService memberService = (MemberService) springContext.getBean("memberService");
+
 		try {
 			MemberCookie mc = mapper.readValue(json, MemberCookie.class);
-			// entity = memberService.get(UUID.fromString(mc.getUuid()));
-			return mc.getUuid();
+
+			// UserService service =
+			// ApplicationContext.this.getBean(UserService.class);
+
+			entity = memberService.get(UUID.fromString(mc.getUuid()));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return entity;
 	}
 
 	public static class UserCookie {

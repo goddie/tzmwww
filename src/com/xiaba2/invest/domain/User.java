@@ -158,9 +158,38 @@ public class User extends BaseUUIDEntity
 	@Column
 	private String serail;
 	
+	/**
+	 * 余额
+	 */
+	@Column
+	private float balance;
+	
+	/**
+	 * 冻结资金
+	 */
+	@Column
+	private float frozen;
 	
 	
 	
+	
+	
+	public float getBalance() {
+		return balance;
+	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
+
+	public float getFrozen() {
+		return frozen;
+	}
+
+	public void setFrozen(float frozen) {
+		this.frozen = frozen;
+	}
+
 	public float getIncomeWealth() {
 		return incomeWealth;
 	}

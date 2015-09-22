@@ -25,6 +25,7 @@
                                 <li><a href="${pageContext.request.contextPath}/traderecord/admin/list?p=1">交易记录</a></li>
                                 <li><a href="${pageContext.request.contextPath}/popularapply/admin/list?p=1">投资猫达人</a></li>
                                 <li><a href="${pageContext.request.contextPath}/keyvalue/admin/list?p=1">规则管理</a></li>
+                                <li><a href="${pageContext.request.contextPath}/member/logout">退出登录</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->
                     </div>

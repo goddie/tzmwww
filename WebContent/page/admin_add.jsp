@@ -13,7 +13,7 @@
 			<div class="col-lg-12">
 
 				<form method="post"
-					action="${pageContext.request.contextPath}/member/reg"
+					action="${pageContext.request.contextPath}/member/action/add"
 					class="bootstrap-admin-login-form">
 					<h1>用户注册</h1>
 					<div class="form-group">

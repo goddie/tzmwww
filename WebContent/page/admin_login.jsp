@@ -23,7 +23,7 @@
 				</c:if>
 
 				<form method="post"
-					action="${pageContext.request.contextPath}/member/login"
+					action="${pageContext.request.contextPath}/member/action/login"
 					class="bootstrap-admin-login-form">
 					<h1>管理登录</h1>
 					<div class="form-group">

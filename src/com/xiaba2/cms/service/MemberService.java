@@ -39,12 +39,12 @@ public class MemberService extends BaseService<Member, UUID> {
 	public Member save(Member entity) {
 
 		if (StringUtils.isEmpty(entity.getUsername()) && StringUtils.isEmpty(entity.getPassword())) {
-			throw new RuntimeException();
+			throw new RuntimeException("用户名密码不能为空");
 		}
 
 		DetachedCriteria criteria = memberDao.createDetachedCriteria();
-		criteria.add(Restrictions.or(Restrictions.eq("username", entity.getUsername().trim()),
-				Restrictions.eq("email", entity.getUsername().trim())));
+		criteria.add(Restrictions.eq("isDelete", 0));
+		criteria.add(Restrictions.eq("username", entity.getUsername().trim()));
 
 		List<Member> list = findByCriteria(criteria);
 
@@ -55,11 +55,27 @@ public class MemberService extends BaseService<Member, UUID> {
 
 		entity = memberDao.save(entity);
 
-//		User user = new User();
-//		user.setMember(entity);
-//		userDao.save(user);
-//		entity.setUser(user);
-//		memberDao.saveOrUpdate(entity);
+		
+		
+		DetachedCriteria criteria2 = userDao.createDetachedCriteria();
+		criteria2.add(Restrictions.eq("isDelete", 0));
+		criteria2.add(Restrictions.eq("username", entity.getUsername().trim()));
+		List<User> list2 = userDao.findByCriteria(criteria2);
+
+		if (!list2.isEmpty()) {
+			throw new RuntimeException("用户重复");
+		}
+		
+		
+		User user = new User();
+		user.setUsername(entity.getUsername());
+		user.setPassword(entity.getPassword());
+		user.setCreatedDate(new Date());
+		user.setRegIp(entity.getRegIp());
+		user.setMember(entity);
+		userDao.save(user);
+		entity.setUser(user);
+		memberDao.saveOrUpdate(entity);
 
 		return entity;
 	}

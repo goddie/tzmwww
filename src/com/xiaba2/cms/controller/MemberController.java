@@ -23,12 +23,14 @@ import org.springframework.web.util.WebUtils;
  
 
 
+
 import com.xiaba2.cms.domain.Member;
 import com.xiaba2.cms.service.MemberService;
 import com.xiaba2.core.JsonResult;
 import com.xiaba2.invest.domain.User;
 import com.xiaba2.invest.service.UserService;
 import com.xiaba2.util.HttpUtil;
+import com.xiaba2.util.SessionUtil;
 
 @RestController
 @RequestMapping("/member")
@@ -39,27 +41,72 @@ public class MemberController {
 	@Resource
 	private UserService userService;
 
+//	/**
+//	 * 登录页面
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/page/{name}")
+//	public ModelAndView getPage(@PathVariable String name) {
+//		return  new ModelAndView("member_"+name);
+//	}
+	
+	
 	/**
-	 * 登录页面
+	 * 管理员登录页面
 	 * @return
 	 */
-	@RequestMapping(value = "/page/{name}")
-	public ModelAndView getPage(@PathVariable String name) {
-		return  new ModelAndView("member_"+name);
+	@RequestMapping(value = "/login")
+	public ModelAndView adminLogin() {
+		return  new ModelAndView("admin_login");
 	}
+	
+	
+	/**
+	 * 新增管理员
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@RequestMapping(value = "/add")
+	public ModelAndView adminAdd(Member entity,RedirectAttributes attr,HttpServletRequest request) {
+		ModelAndView mv = new ModelAndView("admin_add");
+		return mv;
+	}
+	
+	
+	/**
+	 * 退出
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@RequestMapping(value = "/logout")
+	public ModelAndView adminLogout( HttpSession session) {
+		ModelAndView mv = new ModelAndView("redirect:/member/login");
+		
+		session.removeAttribute("user");
+		session.removeAttribute("member");
+		
+		SessionUtil.getInstance().removeCookie("user");
+		SessionUtil.getInstance().removeCookie("member");
+		
+		return mv;
+	}
+	
+	
 	
 	/**
 	 * 登录
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/login")
+	@RequestMapping(value = "/action/login")
 	public ModelAndView login(Member entity, RedirectAttributes attr,
 			HttpServletRequest request) {
 
 		ModelAndView mv = new ModelAndView();
 		DetachedCriteria criteria = memberService.createDetachedCriteria();
-
+		criteria.add(Restrictions.eq("isDelete", 0));
 		criteria.add(Restrictions.eq("username", entity.getUsername()));
 		criteria.add(Restrictions.eq("password", entity.getPassword()));
 
@@ -70,9 +117,11 @@ public class MemberController {
 
 		if (!list.isEmpty()) {
 			// attr.addAttribute("loginMember", list.get(0).getId().toString());
-			
 			DetachedCriteria criteria2 = userService.createDetachedCriteria();
-			criteria2.add(Restrictions.eq("member", list.get(0)));
+			criteria2.add(Restrictions.eq("isDelete", 0));
+			criteria2.add(Restrictions.eq("username", entity.getUsername()));
+			criteria2.add(Restrictions.eq("password", entity.getPassword()));
+			
 
 			List<User> list2 = userService.findByCriteria(criteria2);
 			
@@ -84,15 +133,17 @@ public class MemberController {
 //			session.setAttribute("user", list2.get(0));
 			
 			attr.addFlashAttribute("msg", "登录成功!");
-			mv.setViewName("redirect:/page/ucenter_userconfig.jsp");
+			mv.setViewName("redirect:/user/admin/list?p=1");
 		} else {
 			attr.addFlashAttribute("msg", "账号不存在!");
-			mv.setViewName("redirect:/member/jsplogin");
+			mv.setViewName("redirect:/member/login");
 		}
 
 		return mv;
 	}
 
+	
+	
 
 
 	/**
@@ -101,20 +152,20 @@ public class MemberController {
 	 * @param entity
 	 * @return
 	 */
-	@RequestMapping(value = "/reg")
+	@RequestMapping(value = "/action/add")
 	public ModelAndView reg(Member entity,RedirectAttributes attr,HttpServletRequest request) {
 		ModelAndView mv = new ModelAndView();
-		entity.setEmail(entity.getUsername());
+		//entity.setEmail(entity.getUsername());
 		entity.setRegIp(HttpUtil.getIpAddr(request));
 		entity.setRegTime(new Date());
 		memberService.save(entity);
-		attr.addFlashAttribute("msg", "帐号重复存在!");
-		mv.setViewName("redirect:/member/page/login");
+		attr.addFlashAttribute("msg", "注册成功");
+		mv.setViewName("redirect:/member/login");
 		return mv;
 	}
 
 	
-	@RequestMapping(value = "/list")
+	@RequestMapping(value = "/admin/list")
 	public ModelAndView list(RedirectAttributes attr) {
 
 		List<Member> list = memberService.loadAll();
